@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="update">
+</form>
+
+
+{% endblock %}
+
+{% for message in messages %}
+{% if message.tags == "error" %}
+<span style="color:red">{{message}}</span>
+{% elif message.tags == "success" %}
+<span style="color:green">{{message}}</span>
+{% else %}
+<span style="color:blue">{{message}}</span>
+{% endif %}
+{% endfor %}

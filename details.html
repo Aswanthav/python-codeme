@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="card" style="width: 22rem;">
+  {% if blog.image %}
+  <img class="card-img-top" src="{{blog.image.url}}" alt="Card image cap">
+  {% endif %}
+  <div class="card-body">
+    <h4 class="card-title">User:{{blog.fk_user.username}}</h4>
+    <h2 class="card-title">Title:{{blog.title}}</h2>
+    <h4 class="card-title">Category:{{blog.category}}</h4>
+    <h2 class="card-title">{{blog.context}}</h2>
+    {% if request.user == blog.fk_user %}
+    <a href="{% url 'edit' blog.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'blog_delete' blog.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
+  </div>
+</div> 
+<hr>
+
+<form method="post">
+  {% csrf_token %}
+  <section style="background-color: #d94125;">
+    <div class="container my-5 py-5 text-body">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-6">
+          <div class="card">
+            <div class="card-body p-4">
+              <div class="d-flex flex-start w-100">
+                <img class="rounded-circle shadow-1-strong me-3"
+                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65"
+                  height="65" />
+                <div class="w-100">
+                  <h5>Add a comment</h5>
+
+                  <div data-mdb-input-init class="form-outline">
+                    <textarea class="form-control" name="comment" id="textAreaExample"
+                      rows="4">{{comment.comment}}</textarea>
+                    <label class="form-label" for="textAreaExample">What is your view?</label>
+                  </div>
+                  <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger">
+                      Send <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                    </button>
+                    <button>cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+<hr>
+<hr>
+
+<!-- comment -->
+{% for i in comments %}
+
+{% if i != comment %}
+
+<section style="background-color: #f7f6f6;">
+  <div class="container my-10 py-10 text-body" style="width:1000px;">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div class="d-flex justify-content-between align-items-center mb-8">
+
+
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="40" height="40" />
+              <div class="w-100">
+                <div class="d-flex justify-content-between align-items-center mb-3" style="width:800px">
+                  <h6 class="text-primary fw-bold mb-0">
+                    {{i.fk_user.username}}
+                    <br><br>
+                    <span class="text-body ms-2">{{i.comment}}</span>
+
+                  </h6>
+
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+
+                  <div class="d-flex flex-row">
+                    <p class="mb-0">{{i.created_data}}</p>
+                    {% if request.user == i.fk_user %}
+                    <a href="{% url 'comment_edit' i.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'comment_delete' i.id %}" class="btn btn-primary">delete</a>
+                    {% endif %}
+                    <i class="fas fa-star text-warning me-2"></i>
+                    <i class="far fa-check-circle" style="color: #aaa;"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+</section>
+
+{% endif %}
+{% endfor %}
+
+
+{% endblock %}
+
+{% for message in messages %}
+{% if message.tags == "error" %}
+<span style="color:red">{{message}}</span>
+{% elif message.tags == "success" %}
+<span style="color:green">{{message}}</span>
+{% else %}
+<span style="color:blue">{{message}}</span>
+{% endif %}
+{% endfor %}

@@ -1,0 +1,6 @@
+{% for i in sam_obj %}
+
+<h1>{{i.title}}</h1>
+<p>{{i.description}}</p><br>
+<a href="{% url 'sam_detail' i.id %}">View more</a>
+{% endfor %}

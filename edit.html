@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 style="color: rgb(190, 240, 8);text-align: center;">THE BEST BLOG</h1>
+<hr>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>title</label><br>
+    <input type="text" id="title" name="title" value="{{blog.title}}"><br><br>
+    <label for="context">context</label><br>
+    <textarea id="context" name="context" rows="10">{{blog.context}}</textarea><br><br>
+
+
+    <select name="cate">
+        {% for c in cat %}
+        <option value="{{c.0}}" {% if blog.category == c.0 %}selected{% endif %}>{{c.1}}</option>
+        {% endfor %}
+    </select><br><br>
+
+
+    <label>image</label><br>
+    <input type="file" name="image" accept="image/*"><br><br>
+
+    {% if blog.image %}
+    <h6>Currently : {{blog.image.url}}</h6><br>
+    {% endif %}
+    <input type="submit" value="Edit">
+
+</form>
+
+{% endblock %}
+
+
+{% for message in messages %}
+{% if message.tags == "error" %}
+<span style="color:red">{{message}}</span>
+{% elif message.tags == "success" %}
+<span style="color:green">{{message}}</span>
+{% else %}
+<span style="color:blue">{{message}}</span>
+{% endif %}
+{% endfor %}

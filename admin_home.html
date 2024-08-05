@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin Interface</h1>
+<hr>
+{% for i in blog %}
+<div class="card">
+
+    <h5 class="card-header">name:{{i.title}}</h5>
+    <h5 class="card-header">category :{{i.category}}</h5>
+    <a href="{% url 'change_status' i.id %}" class="btn btn-primary">{% if i.is_published %}published{% else %}not_publisged{% endif %}</a>
+</div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% for message in messages %}
+{% if message.tags == "error" %}
+<span style="color:red">{{message}}</span>
+{% elif message.tags == "success" %}
+<span style="color:green">{{message}}</span>
+{% else %}
+<span style="color:blue">{{message}}</span>
+{% endif %}
+{% endfor %}
